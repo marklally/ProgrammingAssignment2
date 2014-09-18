@@ -1,7 +1,12 @@
-## Put comments here that give an overall description of what your
-## functions do
+## This script contains two functions that together allow for the result
+## of a matrix inversion calculation to be reused by caching the result the 
+## first time it is calculated
 
-## Write a short comment describing this function
+## this function takes a matrix and returns a list containing methods to 
+## store/retrieve the matrix and its inverse. note that there is no
+## guarantee that the matrix the getInverse function returns is actually
+## the inverse of the original matrix - that logic is controlled by the
+## cacheSolve function.
 
 makeCacheMatrix <- function(originalMatrix = matrix()) {
 	inverseMatrix <- NULL
@@ -20,15 +25,20 @@ makeCacheMatrix <- function(originalMatrix = matrix()) {
 }
 
 
-## Write a short comment describing this function
+## the cacheSolve function takes a 'matrix' argument as returned from the
+## makeCacheMatrix function above and calculates the inverse of the matrix.
+## the first time the function is called, the inverse is calculated and the 
+## result is cached. subsequent calls to the function with the same matrix
+## will return the cached result rather than recalculating.
 
 cacheSolve <- function(m, ...) {
-      ## Return a matrix that is the inverse of the matrix contained in 'm'
+      ## returns a matrix that is the inverse of the matrix contained in 'm'
 
 	inverse <- m$getInverse()
 	
 	if(is.null(inverse)){
 		message("calculating matrix inverse")
+
 		originalMatrix <- m$get()
 		inverse <- solve(originalMatrix)
 		m$setInverse(inverse)
